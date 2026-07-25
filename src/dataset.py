@@ -16,12 +16,12 @@ def load_data():
     y_test = test.iloc[:, 0] - 1
 
 
-    X_train = train.iloc[:, 1:]    # light curve values 
+    x_train = train.iloc[:, 1:]    # light curve values 
     y_train = train.iloc[:, 0] - 1  # wheather it has an exoplanet or not
 
 
     scaler = StandardScaler()
-    x_scaled = scaler.fit_transform(X_train)
+    x_scaled = scaler.fit_transform(x_train)
     x_test_scaled = scaler.transform(x_test)
 
     # Split data
@@ -33,9 +33,17 @@ def load_data():
         stratify=y_train
     )
 
+    X_train = X_train.reshape(-1, X_train.shape[1], 1)
+    X_val = X_val.reshape(-1, X_val.shape[1], 1)
+    x_test_scaled = x_test_scaled.reshape(-1, x_test_scaled.shape[1], 1)
+
+    print(X_train.shape)
+    print(X_val.shape)
+    print(x_test_scaled.shape)
+
     # ros = RandomOverSampler(random_state=42)
     # X_train, y_train = ros.fit_resample(X_train, y_train)
 
     # return X_train, X_val, y_train, y_val
-
-    return X_train, x_test_scaled, y_train, y_test
+    
+    return X_train, X_val, x_test_scaled, y_train, y_val, y_test
