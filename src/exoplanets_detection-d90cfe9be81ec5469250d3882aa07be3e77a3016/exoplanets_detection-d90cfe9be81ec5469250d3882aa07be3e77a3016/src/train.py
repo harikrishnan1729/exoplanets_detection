@@ -18,7 +18,7 @@ print("validation samples: ", X_test.shape[0])
 model = create_model(X_train.shape[1])
 tf.keras.metrics.Precision(name="precision")
 early_stopping = EarlyStopping(
-    monitor="val_precision",
+    monitor="val_loss",
     mode = "max",
     patience=10,
     restore_best_weights=True
@@ -27,14 +27,14 @@ history = model.fit(
     X_train,
     y_train,
     validation_data = (X_val, y_val),
-    epochs = 100,
+    epochs = 23,
     batch_size = 30,
     verbose = 1,
-    class_weight = {
-        0:1,
-        1:15
-    },
-    callbacks=[early_stopping]
+    # callbacks=[early_stopping]
+    class_weight={
+        0: 1.0,   # Non-planet
+        1: 40.0   # Planet
+    }
 
 )
 

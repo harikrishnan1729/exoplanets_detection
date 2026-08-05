@@ -16,7 +16,6 @@ def load_data():
     x_test = test.iloc[:, 1:]
     y_test = test.iloc[:, 0] - 1
 
-
     X_train = train.iloc[:, 1:]    # light curve values 
     y_train = train.iloc[:, 0] - 1  # wheather it has an exoplanet or not
 
@@ -39,7 +38,7 @@ def load_data():
 
     # return X_train, X_val, y_train, y_val
 
-    smote = SMOTE(random_state=42)
-    X_train, y_train = smote.fit_resample(X_train, y_train)
+    # smote = SMOTE(random_state=42)
+    # X_train, y_train = smote.fit_resample(X_train, y_train)
 
     return X_train, X_val, y_train, y_val, x_test_scaled, y_test

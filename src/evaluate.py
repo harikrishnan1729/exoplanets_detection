@@ -2,38 +2,37 @@ import tensorflow as tf
 from dataset import load_data
 from sklearn.metrics import confusion_matrix, classification_report
 
-# Load the TEST set
+# Load the TEST dataset
 _, _, X_test, _, _, y_test = load_data()
 
-# Load trained model
+# Load the trained model
 model = tf.keras.models.load_model("models/exoplanet_detector.keras")
 
 # Predict probabilities
 y_pred_prob = model.predict(X_test, verbose=0).flatten()
 
-# Convert probabilities to 0 or 1
-threshold = 0.1
+# Thresholds to test
+threshold = 0.5
+
+
+# Convert probabilities to binary predictions
 y_pred = (y_pred_prob >= threshold).astype(int)
-
-thresholds = [0.01, 0.03, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]
-
-for t in thresholds:
-    y_pred = (y_pred_prob >= t).astype(int)
-
-    print(f"\nThreshold = {t}")
-    print(confusion_matrix(y_test, y_pred))
-
-print("_____________________________________________-nigga")
-
+print("=" * 60)
+print(f"Threshold = {threshold:.2f}")
+print("=" * 60)
 print("\nConfusion Matrix")
 print(confusion_matrix(y_test, y_pred))
-
 print("\nClassification Report")
-print(classification_report(y_test, y_pred))
+print(classification_report(y_test, y_pred, digits=4))
 
-print("Minimum probability:", y_pred_prob.min())
-print("Maximum probability:", y_pred_prob.max())
-print("First 20 probabilities:")
+# Probability statistics
+print("\n" + "=" * 60)
+print("Probability Statistics")
+print("=" * 60)
 
-print(y_pred_prob[:20].flatten())
+print(f"Minimum probability : {y_pred_prob.min():.6f}")
+print(f"Maximum probability : {y_pred_prob.max():.6f}")
+print(f"Mean probability    : {y_pred_prob.mean():.6f}")
 
+print("\nFirst 20 probabilities:")
+print(y_pred_prob[:20])
