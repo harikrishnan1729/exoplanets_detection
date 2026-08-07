@@ -39,7 +39,7 @@ F1_PATTERN = re.compile(r"f1\s*:\s*([0-9]*\.?[0-9]+)", re.IGNORECASE)
 
 # Saturation controls
 MAX_ITERATIONS = 50          # hard safety cap on train/eval cycles
-PATIENCE = 4                 # how many non-improving rounds in a row before we stop
+PATIENCE = 24          # how many non-improving rounds in a row before we stop
 MIN_IMPROVEMENT = 0.001      # improvement smaller than this doesn't reset patience
 
 # If True: after pushing a new best, keep looping to try to beat it again.

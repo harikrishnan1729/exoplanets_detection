@@ -44,17 +44,17 @@ print(confusion_matrix(y_test, y_pred))
 print("\nClassification Report")
 print(classification_report(y_test, y_pred, digits=4))
 
-# Probability statistics
-print("\n" + "=" * 60)
-print("Probability Statistics")
-print("=" * 60)
+# # Probability statistics
+# print("\n" + "=" * 60)
+# print("Probability Statistics")
+# print("=" * 60)
 
-print(f"Minimum probability : {y_pred_prob.min():.6f}")
-print(f"Maximum probability : {y_pred_prob.max():.6f}")
-print(f"Mean probability    : {y_pred_prob.mean():.6f}")
+# print(f"Minimum probability : {y_pred_prob.min():.6f}")
+# print(f"Maximum probability : {y_pred_prob.max():.6f}")
+# print(f"Mean probability    : {y_pred_prob.mean():.6f}")
 
-planet_indices = y_test[y_test == 1].index
+# planet_indices = y_test[y_test == 1].index
 
-print("Actual planets:")
-for idx in planet_indices:
-    print(f"Sample {idx}: Probability = {y_pred_prob[idx]:.6f}")
+# print("Actual planets:")
+# for idx in planet_indices:
+#     print(f"Sample {idx}: Probability = {y_pred_prob[idx]:.6f}")
