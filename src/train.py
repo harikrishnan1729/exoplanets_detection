@@ -10,8 +10,8 @@ x_train, x_val, x_test, y_train, y_val, y_test = load_data()
 #                                                    random_state = 42,
 #                                                    stratify = y)
 
-print("training samples: ", x_train.shape[0])
-print("validation samples: ", x_test.shape[0])
+print("validation samples:", x_val.shape[0])
+print("test samples:", x_test.shape[0])
 
 model = create_model(x_train.shape[1:])
 print(model.summary())

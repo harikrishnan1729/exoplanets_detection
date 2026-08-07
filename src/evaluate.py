@@ -1,6 +1,8 @@
 import tensorflow as tf
 from dataset import load_data
 from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import roc_auc_score
+import numpy as np
 
 # Load the TEST dataset
 _, _, X_test, _, _, y_test = load_data()
@@ -12,7 +14,7 @@ model = tf.keras.models.load_model("models/exoplanet_detector.keras")
 y_pred_prob = model.predict(X_test, verbose=0).flatten()
 
 # Thresholds to test
-threshold = 0.5
+threshold = .5
 
 
 # Convert probabilities to binary predictions
@@ -34,5 +36,8 @@ print(f"Minimum probability : {y_pred_prob.min():.6f}")
 print(f"Maximum probability : {y_pred_prob.max():.6f}")
 print(f"Mean probability    : {y_pred_prob.mean():.6f}")
 
-print("\nFirst 20 probabilities:")
-print(y_pred_prob[:20])
+planet_indices = y_test[y_test == 1].index
+
+print("Actual planets:")
+for idx in planet_indices:
+    print(f"Sample {idx}: Probability = {y_pred_prob[idx]:.6f}")
