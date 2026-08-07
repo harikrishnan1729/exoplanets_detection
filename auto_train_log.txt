@@ -1,0 +1,5 @@
+[2026-08-07 19:43:08] Starting. Current best F1 on record: -1.0
+[2026-08-07 19:43:08] --- Iteration 1/50 ---
+[2026-08-07 19:43:08] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-07 19:43:16] Current F1 = 0.250000 | Best so far = -1.000000
+[2026-08-07 19:43:16] New best F1! (0.250000, improvement 0.250000)
