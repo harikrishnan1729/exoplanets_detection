@@ -44,7 +44,7 @@ MIN_IMPROVEMENT = 0.001      # improvement smaller than this doesn't reset patie
 
 # If True: after pushing a new best, keep looping to try to beat it again.
 # If False: stop as soon as one new best is committed & pushed.
-CONTINUE_AFTER_BEST = False
+CONTINUE_AFTER_BEST = True
 
 
 # ---------------------------------------------------------------------------
