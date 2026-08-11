@@ -22,6 +22,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+import numpy as np
 
 # ---------------------------------------------------------------------------
 # CONFIG - edit these if your paths change
@@ -39,7 +40,7 @@ F1_PATTERN = re.compile(r"f1\s*:\s*([0-9]*\.?[0-9]+)", re.IGNORECASE)
 
 # Saturation controls
 MAX_ITERATIONS = 50          # hard safety cap on train/eval cycles
-PATIENCE = 24          # how many non-improving rounds in a row before we stop
+PATIENCE = 100         # how many non-improving rounds in a row before we stop
 MIN_IMPROVEMENT = 0.001      # improvement smaller than this doesn't reset patience
 
 # If True: after pushing a new best, keep looping to try to beat it again.
@@ -54,6 +55,29 @@ def log(msg: str):
     print(line)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")
+
+def karplus(frequency):
+    sample_rate = 44100
+    delay = int(sample_rate / frequency)
+    buffer = np.random.uniform(-1, 1, delay)
+    samples = []
+    for _ in range(44100):
+        samples.append(buffer[0])
+
+        first = buffer[0]
+        second = buffer[1]
+
+        new_sample = 0.996 * (first + second) / 2
+
+        buffer = np.append(buffer[1:], new_sample)
+
+    samples = np.array(samples)
+    samples = samples / np.max(np.abs(samples))
+    audio = (samples * 32767).astype(np.int16)
+    audio = np.column_stack((audio, audio))
+    sound = p.sndarray.make_sound(audio)
+    sound.play()
+    p.time.wait(2000)
 
 
 def run_and_capture(cmd, cwd):
@@ -99,6 +123,7 @@ def save_best_f1(value: float):
 
 
 def git(cmd_args, cwd):
+    karplus(124)
     result = subprocess.run(
         ["git"] + cmd_args, cwd=cwd, capture_output=True, text=True
     )

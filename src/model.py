@@ -11,12 +11,15 @@ def create_model(input_shape):
         tf.keras.layers.Dropout(0.3),
 
         tf.keras.layers.Dense(64, activation="relu"),
+        tf.keras.layers.Dropout(0.3),
+
+        tf.keras.layers.Dense(32, activation="relu"),
         tf.keras.layers.Dense(1, activation="sigmoid")
     ])
 
 
     model.compile(
-        optimizer = "adam",
+        optimizer = tf.keras.optimizers.Adam(learning_rate = 0.001),
         loss = tf.keras.losses.BinaryFocalCrossentropy(
             gamma = 2.0,
             apply_class_balancing = False

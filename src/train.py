@@ -26,11 +26,11 @@ history = model.fit(
     y_train,
     validation_data = (x_val, y_val),
     epochs = 20,
-    batch_size = 30,
-    verbose = 1,
+    batch_size = 20,
+    verbose = 2,
     # class_weight = {
     #     0:1,
-    #     1:100
+    #     1:2
     # },
     callbacks=[early_stopping]
 )
