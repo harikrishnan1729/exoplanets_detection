@@ -3968,3 +3968,134 @@
 [2026-08-11 19:38:05] No meaningful improvement. Streak = 12/100
 [2026-08-11 19:38:05] Running train.py to try for a better model...
 [2026-08-11 19:38:05] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:39:14] Starting. Current best F1 on record: 0.444444
+[2026-08-11 19:39:14] --- Iteration 1/50 ---
+[2026-08-11 19:39:14] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:39:21] Current F1 = 0.083333 | Best so far = 0.444444
+[2026-08-11 19:39:21] No meaningful improvement. Streak = 1/100
+[2026-08-11 19:39:21] Running train.py to try for a better model...
+[2026-08-11 19:39:21] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:39:40] Training finished. Re-evaluating...
+[2026-08-11 19:39:40] --- Iteration 2/50 ---
+[2026-08-11 19:39:40] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:39:47] Current F1 = 0.153846 | Best so far = 0.444444
+[2026-08-11 19:39:47] No meaningful improvement. Streak = 2/100
+[2026-08-11 19:39:47] Running train.py to try for a better model...
+[2026-08-11 19:39:47] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:40:07] Training finished. Re-evaluating...
+[2026-08-11 19:40:07] --- Iteration 3/50 ---
+[2026-08-11 19:40:07] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:40:14] Current F1 = 0.181818 | Best so far = 0.444444
+[2026-08-11 19:40:14] No meaningful improvement. Streak = 3/100
+[2026-08-11 19:40:14] Running train.py to try for a better model...
+[2026-08-11 19:40:14] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:40:31] Training finished. Re-evaluating...
+[2026-08-11 19:40:31] --- Iteration 4/50 ---
+[2026-08-11 19:40:31] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:40:38] Current F1 = 0.153846 | Best so far = 0.444444
+[2026-08-11 19:40:38] No meaningful improvement. Streak = 4/100
+[2026-08-11 19:40:38] Running train.py to try for a better model...
+[2026-08-11 19:40:38] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:40:54] Training finished. Re-evaluating...
+[2026-08-11 19:40:54] --- Iteration 5/50 ---
+[2026-08-11 19:40:54] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:41:01] Current F1 = 0.235294 | Best so far = 0.444444
+[2026-08-11 19:41:01] No meaningful improvement. Streak = 5/100
+[2026-08-11 19:41:01] Running train.py to try for a better model...
+[2026-08-11 19:41:01] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:41:18] Training finished. Re-evaluating...
+[2026-08-11 19:41:18] --- Iteration 6/50 ---
+[2026-08-11 19:41:18] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:41:25] Current F1 = 0.200000 | Best so far = 0.444444
+[2026-08-11 19:41:25] No meaningful improvement. Streak = 6/100
+[2026-08-11 19:41:25] Running train.py to try for a better model...
+[2026-08-11 19:41:25] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:41:42] Training finished. Re-evaluating...
+[2026-08-11 19:41:42] --- Iteration 7/50 ---
+[2026-08-11 19:41:42] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:41:49] Current F1 = 0.285714 | Best so far = 0.444444
+[2026-08-11 19:41:49] No meaningful improvement. Streak = 7/100
+[2026-08-11 19:41:49] Running train.py to try for a better model...
+[2026-08-11 19:41:49] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:42:07] Training finished. Re-evaluating...
+[2026-08-11 19:42:07] --- Iteration 8/50 ---
+[2026-08-11 19:42:07] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:42:14] Current F1 = 0.200000 | Best so far = 0.444444
+[2026-08-11 19:42:14] No meaningful improvement. Streak = 8/100
+[2026-08-11 19:42:14] Running train.py to try for a better model...
+[2026-08-11 19:42:14] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:42:33] Training finished. Re-evaluating...
+[2026-08-11 19:42:33] --- Iteration 9/50 ---
+[2026-08-11 19:42:33] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:42:40] Current F1 = 0.117647 | Best so far = 0.444444
+[2026-08-11 19:42:40] No meaningful improvement. Streak = 9/100
+[2026-08-11 19:42:40] Running train.py to try for a better model...
+[2026-08-11 19:42:40] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:42:58] Training finished. Re-evaluating...
+[2026-08-11 19:42:58] --- Iteration 10/50 ---
+[2026-08-11 19:42:58] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:43:05] Current F1 = 0.333333 | Best so far = 0.444444
+[2026-08-11 19:43:05] No meaningful improvement. Streak = 10/100
+[2026-08-11 19:43:05] Running train.py to try for a better model...
+[2026-08-11 19:43:05] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:43:24] Training finished. Re-evaluating...
+[2026-08-11 19:43:24] --- Iteration 11/50 ---
+[2026-08-11 19:43:24] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:43:31] Current F1 = 0.200000 | Best so far = 0.444444
+[2026-08-11 19:43:31] No meaningful improvement. Streak = 11/100
+[2026-08-11 19:43:31] Running train.py to try for a better model...
+[2026-08-11 19:43:31] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:43:48] Training finished. Re-evaluating...
+[2026-08-11 19:43:48] --- Iteration 12/50 ---
+[2026-08-11 19:43:48] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:43:55] Current F1 = 0.200000 | Best so far = 0.444444
+[2026-08-11 19:43:55] No meaningful improvement. Streak = 12/100
+[2026-08-11 19:43:55] Running train.py to try for a better model...
+[2026-08-11 19:43:55] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:44:16] Training finished. Re-evaluating...
+[2026-08-11 19:44:16] --- Iteration 13/50 ---
+[2026-08-11 19:44:16] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:44:23] Current F1 = 0.181818 | Best so far = 0.444444
+[2026-08-11 19:44:23] No meaningful improvement. Streak = 13/100
+[2026-08-11 19:44:23] Running train.py to try for a better model...
+[2026-08-11 19:44:23] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:44:41] Training finished. Re-evaluating...
+[2026-08-11 19:44:41] --- Iteration 14/50 ---
+[2026-08-11 19:44:41] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:44:48] Current F1 = 0.250000 | Best so far = 0.444444
+[2026-08-11 19:44:48] No meaningful improvement. Streak = 14/100
+[2026-08-11 19:44:48] Running train.py to try for a better model...
+[2026-08-11 19:44:48] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:45:06] Training finished. Re-evaluating...
+[2026-08-11 19:45:06] --- Iteration 15/50 ---
+[2026-08-11 19:45:06] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:45:13] Current F1 = 0.222222 | Best so far = 0.444444
+[2026-08-11 19:45:13] No meaningful improvement. Streak = 15/100
+[2026-08-11 19:45:13] Running train.py to try for a better model...
+[2026-08-11 19:45:13] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:45:32] Training finished. Re-evaluating...
+[2026-08-11 19:45:32] --- Iteration 16/50 ---
+[2026-08-11 19:45:32] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:45:39] Current F1 = 0.222222 | Best so far = 0.444444
+[2026-08-11 19:45:39] No meaningful improvement. Streak = 16/100
+[2026-08-11 19:45:39] Running train.py to try for a better model...
+[2026-08-11 19:45:39] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:45:58] Training finished. Re-evaluating...
+[2026-08-11 19:45:58] --- Iteration 17/50 ---
+[2026-08-11 19:45:58] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:46:05] Current F1 = 0.222222 | Best so far = 0.444444
+[2026-08-11 19:46:05] No meaningful improvement. Streak = 17/100
+[2026-08-11 19:46:05] Running train.py to try for a better model...
+[2026-08-11 19:46:05] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:46:26] Training finished. Re-evaluating...
+[2026-08-11 19:46:26] --- Iteration 18/50 ---
+[2026-08-11 19:46:26] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:46:33] Current F1 = 0.266667 | Best so far = 0.444444
+[2026-08-11 19:46:33] No meaningful improvement. Streak = 18/100
+[2026-08-11 19:46:33] Running train.py to try for a better model...
+[2026-08-11 19:46:33] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\train.py
+[2026-08-11 19:46:51] Training finished. Re-evaluating...
+[2026-08-11 19:46:51] --- Iteration 19/50 ---
+[2026-08-11 19:46:51] Running: c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\.venv\Scripts\python.exe c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor\src\evaluate.py
+[2026-08-11 19:46:58] Current F1 = 0.500000 | Best so far = 0.444444
+[2026-08-11 19:46:58] New best F1! (0.500000, improvement 0.055556)
