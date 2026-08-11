@@ -11,8 +11,8 @@ dataset_path = r"C:\Users\HARIKRISHNAN\.cache\kagglehub\datasets\keplersmachines
 def smooth_light_curves(x):
     return savgol_filter(
         x,
-        window_length=11,
-        polyorder=3,
+        window_length=12,
+        polyorder=5,
         axis=1
     )
 
