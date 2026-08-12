@@ -58,46 +58,46 @@ model.fit(x_train, y_train)
 # print(confusion_matrix(y_val, y_val_pred))
 # print(classification_report(y_val, y_val_pred, zero_division=0))
 
-# # Test
-# y_prob = model.predict_proba(x_test)[:, 1]
+# Test
+y_prob = model.predict_proba(x_test)[:, 1]
 
-# threshold = 0.046
+threshold = 0.05
 
-# y_test_pred = (y_prob >= threshold).astype(int)
-# print("\nTest results:")
-# print(confusion_matrix(y_test, y_test_pred))
-# print(classification_report(y_test, y_test_pred, zero_division=0))
+y_test_pred = (y_prob >= threshold).astype(int)
+print("\nTest results:")
+print(confusion_matrix(y_test, y_test_pred))
+print(classification_report(y_test, y_test_pred, zero_division=0))
 
-# y_prob = model.predict_proba(x_test)[:, 1]
+y_prob = model.predict_proba(x_test)[:, 1]
 
 # print("Planet probabilities:")
 # print(y_prob)
 
-for threshold in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50]:
-    y_prob = model.predict_proba(x_test)[:, 1]
+# for threshold in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50]:
+#     y_prob = model.predict_proba(x_test)[:, 1]
 
-# Probabilities of actual planets only
-    planet_probabilities = y_prob[y_test == 1]
-    print("Probabilities of actual planets:")
-    print(planet_probabilities)
+# # Probabilities of actual planets only
+#     planet_probabilities = y_prob[y_test == 1]
+#     print("Probabilities of actual planets:")
+#     print(planet_probabilities)
 
 
 
 # Get probabilities on the 20% validation set
-val_probabilities = model.predict_proba(x_val)[:, 1]
+# val_probabilities = model.predict_proba(x_val)[:, 1]
 
-# Try thresholds
-for threshold in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50]:
+# # Try thresholds
+# for threshold in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50]:
 
-    predictions = (val_probabilities >=  0.08).astype(int)
+#     predictions = (val_probabilities >=  0.05).astype(int)
 
-    print(f"\n===== Threshold: {threshold} =====")
+#     print(f"\n===== Threshold: {threshold} =====")
 
-    print(confusion_matrix(y_val, predictions))
+#     print(confusion_matrix(y_val, predictions))
 
-    print(classification_report(
-        y_val,
-        predictions,
-        zero_division=0
-    ))
-    break
+#     print(classification_report(
+#         y_val,
+#         predictions,
+#         zero_division=0
+#     ))
+#     break
