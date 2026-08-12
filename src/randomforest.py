@@ -20,45 +20,7 @@ model = RandomForestClassifier(
     min_samples_leaf=2,
     max_depth=None
 )
-
-# param_grid = {
-#     "n_estimators": [100, 200, 300, 500],
-#     "max_depth": [5, 10, 15, 20, None],
-#     "min_samples_leaf": [1, 2, 4, 8],
-#     "min_samples_split": [2, 5, 10],
-#     "max_features": ["sqrt", "log2"]
-# }
-
-# search = RandomizedSearchCV(
-#     model,
-#     param_distributions=param_grid,
-#     n_iter=20,
-#     scoring="f1",
-#     cv=3,
-#     random_state=42,
-#     n_jobs=-1,
-#     verbose=2
-# )
-
-# search.fit(x_train, y_train)
-
-# print("Best parameters:")
-# print(search.best_params_)
-
-# print("Best CV F1:")
-# print(search.best_score_)
-
-# Train
 model.fit(x_train, y_train)
-
-# # Validation
-# y_val_pred = model.predict(x_val)
-
-# print("\nValidation results:")
-# print(confusion_matrix(y_val, y_val_pred))
-# print(classification_report(y_val, y_val_pred, zero_division=0))
-
-# Test
 y_prob = model.predict_proba(x_test)[:, 1]
 
 threshold = 0.05
@@ -82,7 +44,6 @@ y_prob = model.predict_proba(x_test)[:, 1]
 #     print(planet_probabilities)
 
 
-
 # Get probabilities on the 20% validation set
 # val_probabilities = model.predict_proba(x_val)[:, 1]
 
@@ -90,9 +51,6 @@ y_prob = model.predict_proba(x_test)[:, 1]
 # for threshold in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50]:
 
 #     predictions = (val_probabilities >=  0.05).astype(int)
-
-#     print(f"\n===== Threshold: {threshold} =====")
-
 #     print(confusion_matrix(y_val, predictions))
 
 #     print(classification_report(
