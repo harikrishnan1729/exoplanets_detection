@@ -32,7 +32,7 @@ for t in thresholds:
 
 
 # Convert probabilities to binary predictions
-y_pred = (y_pred_prob >= best_threshold).astype(int)
+y_pred = (y_pred_prob >= 0.112578).astype(int)
 print("=" * 60)
 print(f"Threshold = {best_threshold:.2f} f1: {best_f1}")
 print("=" * 60)
