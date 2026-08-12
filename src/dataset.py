@@ -6,7 +6,7 @@ from imblearn.over_sampling import RandomOverSampler
 from scipy.signal import savgol_filter
 
 
-dataset_path = r"C:\Users\HARIKRISHNAN\.cache\kagglehub\datasets\keplersmachines\kepler-labelled-time-series-data\versions\3"
+dataset_path = r"dataset_path"
 
 def smooth_light_curves(x):
     return savgol_filter(
