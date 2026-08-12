@@ -11,7 +11,7 @@ dataset_path = r"C:\Users\HARIKRISHNAN\.cache\kagglehub\datasets\keplersmachines
 def smooth_light_curves(x):
     return savgol_filter(
         x,
-        window_length=12,
+        window_length=11,
         polyorder=5,
         axis=1
     )
@@ -58,8 +58,8 @@ def load_data():
     # print(X_val.shape)
     # print(x_test_scaled.shape)
 
-    ros = RandomOverSampler(random_state=42)
-    X_train, y_train = ros.fit_resample(X_train, y_train)
+    # ros = RandomOverSampler(random_state=42)
+    # X_train, y_train = ros.fit_resample(X_train, y_train)
 
     # return X_train, X_val, y_train, y_val
     
