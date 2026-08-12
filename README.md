@@ -7,6 +7,8 @@ The dataset used in this project comes from Kaggle's Kepler Labelled Time Series
 the main problem with this dataset which i noticed is, that it is extremely imbalanced. there are roughly around 5050 stars out of which there are only 37 positive planet examples.
 training a model with such training data was challenging
 
+---
+
 another problem was, the model could simple learn to predict:
 no planet
 no planet 
@@ -14,8 +16,10 @@ not planet
 ...
 ...
 .
+
+
 to anything and still get high accuracy since the majority are non planets.
----
+
 ## approches
 **initial preprocessing**
 - pandas was used for handling dataset csv file
