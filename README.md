@@ -1,10 +1,8 @@
 # Exoplanet Detection from Kepler Light Curves
 
-> Trying to find planets orbiting other stars — not by looking at them, but by noticing that a star got very slightly dimmer, very briefly, over and over again.
+> Trying to find planets orbiting other stars. not by looking at them, but by noticing that a star got very slightly dimmer, very briefly, over and over again.
 
 This repository is a hands-on, honest attempt at a genuinely hard machine learning problem: picking out the 0.7% of stars that have a planet from a pile of 5,000 brightness measurements, where "just say no to everything" scores 99.3% accuracy and finds absolutely nothing.
-
-Everything here — the wins, the dead ends, the 717 automated training runs that mostly went nowhere — is documented below.
 
 ---
 
@@ -122,7 +120,7 @@ There are three separate problems stacked on top of each other, and each one has
 
 There are 37 planets among 5,087 training stars. That's **0.73%**.
 
-Machine learning models minimise a loss function. If 99.27% of your data is one class, the fastest, laziest way to make the loss go down is to predict that class every single time. The model isn't being stupid — it's doing exactly what you asked. You just asked the wrong question.
+Machine learning models minimise a loss function. If 99.27% of your data is one class, the fastest, laziest way to make the loss go down is to predict that class every single time.
 
 This actually happened, and it's preserved in the commit history:
 
@@ -155,7 +153,7 @@ Consider two stars, both with planets:
 
 Column `FLUX.200` means "the 200th measurement of this particular star." It does **not** mean the same physical thing for Star A as it does for Star B. There is no reason for a transit to land in the same column across different stars — the orbital periods differ, and the observation start times are arbitrary relative to the orbits.
 
-Any model that treats each column as an independent feature — which is exactly what a fully-connected neural network and a Random Forest both do — is trying to learn a rule like *"if column 200 is low, it's a planet."* That rule cannot generalise, because column 200 is meaningless.
+Any model that treats each column as an independent feature, which is exactly what a fully-connected neural network and a Random Forest both do, is trying to learn a rule like *"if column 200 is low, it's a planet."* That rule cannot generalise, because column 200 is meaningless.
 
 > **This is the single biggest reason performance plateaus around F1 ≈ 0.57.** It is not a hyperparameter problem. It's a representation problem. See [section 11](#11-where-this-should-go-next) for the fix.
 
@@ -200,15 +198,11 @@ path = kagglehub.dataset_download("keplersmachines/kepler-labelled-time-series-d
 print(path)
 ```
 
-Three lines, and they earn their place. `kagglehub` downloads the dataset, unzips it, caches it locally, and returns the path. Run it once. It prints something like:
+Three lines, and they earn their place. `kagglehub` downloads the dataset, unzips it, caches it locally.
 
-```
-C:\Users\HARIKRISHNAN\.cache\kagglehub\datasets\keplersmachines\kepler-labelled-time-series-data\versions\3
-```
 
 **You need to copy that printed path into `dataset.py`.** That's the manual handshake between these two files, and it's the first thing that will trip up anyone cloning this repo.
 
-Why the data isn't committed: `exoTrain.csv` is roughly 250 MB. GitHub warns at 50 MB and hard-rejects at 100 MB. Downloading on demand is the right call.
 
 ---
 
@@ -243,7 +237,7 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import RandomOverSampler
 from scipy.signal import savgol_filter
 
-dataset_path = r"dataset_path"          # ← YOU MUST EDIT THIS
+dataset_path = r"dataset_path"
 ```
 
 > ⚠️ **Setup step:** `dataset_path` is a literal placeholder string. Replace it with the path printed by `download_data.py` before anything will run.
@@ -297,7 +291,6 @@ def load_data():
 
 `iloc[:, 1:]` = every row, columns 1 onward (the 3,197 flux values). `iloc[:, 0]` = every row, column 0 only (the label).
 
-*(Minor inconsistency worth noting: line 21 uses a backslash separator and line 22 a forward slash. Both happen to work on Windows; the backslash version will break on Linux/macOS. See [known bugs](#10-known-bugs-and-rough-edges).)*
 
 #### Step C — Per-star normalisation, and why the `StandardScaler` got commented out
 
@@ -554,197 +547,11 @@ Roughly half the file is commented out, and it's a fair record of the investigat
 
 This file is the most unusual thing in the repository, and honestly the most interesting. It's not a model — it's **infrastructure**. It automates the tedious human loop of *"train, check the score, is it better? if not, train again"* and it commits and pushes to GitHub whenever a new record is set.
 
-The docstring states the design plainly:
-
-```
-1. Run evaluate.py, capture its stdout, parse the line "f1: <score>".
-2. Compare against the best F1 seen so far (stored in best_f1.txt).
-3. If it's a NEW BEST: save it, git add / commit (message includes the score) / push.
-4. If NOT better: run train.py, evaluate again, repeat until F1 "saturates".
-```
-
-#### Configuration
-
-```python
-PROJECT_DIR = Path(r"c:\Users\HARIKRISHNAN\Desktop\exoplanet dectetor")
-PYTHON_EXE  = PROJECT_DIR / ".venv" / "Scripts" / "python.exe"
-EVALUATE_SCRIPT = PROJECT_DIR / "src" / "evaluate.py"
-TRAIN_SCRIPT    = PROJECT_DIR / "src" / "train.py"
-
-BEST_F1_FILE = PROJECT_DIR / "best_f1.txt"
-LOG_FILE     = PROJECT_DIR / "auto_train_log.txt"
-```
-
-Hardcoded Windows paths, invoking the virtualenv's `python.exe` directly so the subprocess inherits the right packages regardless of how the parent was launched. (`(dectetor)` — the typo is in the actual directory name.)
-
-```python
-MAX_ITERATIONS = 50
-PATIENCE = 100
-MIN_IMPROVEMENT = 0.001
-CONTINUE_AFTER_BEST = True
-```
-
-- `MAX_ITERATIONS` — hard cap so it can't loop forever.
-- `PATIENCE` — how many non-improving rounds before giving up. **Set to 100, which exceeds `MAX_ITERATIONS`, so it can never actually trigger.** Earlier log entries show it at `4`, which did work; someone raised it and disabled it by accident.
-- `MIN_IMPROVEMENT` — improvements smaller than 0.001 don't count as progress, so noise doesn't reset the patience counter.
-- `CONTINUE_AFTER_BEST` — keep hunting after setting a record, rather than stopping.
-
-#### Running a subprocess and watching it live
-
-```python
-def run_and_capture(cmd, cwd):
-    process = subprocess.Popen(
-        cmd, cwd=cwd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-    )
-    captured_lines = []
-    for line in process.stdout:
-        print(line, end="")          # live output
-        captured_lines.append(line)
-    process.wait()
-    ...
-    return "".join(captured_lines)
-```
-
-This is a nicely-built helper. The design choices:
-
-- `stderr=subprocess.STDOUT` merges error output into the same stream, so nothing gets lost.
-- `text=True` decodes bytes to `str` automatically.
-- `bufsize=1` requests line buffering, so output appears as it's produced rather than in a lump at the end.
-- Iterating `for line in process.stdout` **both prints and collects** — you can watch training progress in real time *and* still have the full text to parse afterwards. Most naive implementations force you to pick one.
-
-#### Extracting the score with a regex
-
-```python
-F1_PATTERN = re.compile(r"f1\s*:\s*([0-9]*\.?[0-9]+)", re.IGNORECASE)
-
-def parse_f1(output: str):
-    matches = F1_PATTERN.findall(output)
-    if not matches:
-        return None
-    return float(matches[-1])
-```
-
-The pattern, decoded piece by piece:
-
-| Fragment | Meaning |
-|---|---|
-| `f1` | the literal characters `f1` |
-| `\s*` | any amount of whitespace (or none) |
-| `:` | a colon |
-| `\s*` | more optional whitespace |
-| `([0-9]*\.?[0-9]+)` | **capture group**: optional digits, optional dot, then at least one digit |
-| `re.IGNORECASE` | matches `f1:`, `F1:`, `F1 : `, all of them |
-
-So `f1: 0.5714`, `F1:0.5714`, and `F1 : .5714` all parse correctly. Taking `matches[-1]` (the *last* match) is deliberate — if the evaluation script prints intermediate F1 values during a threshold sweep, only the final summary line counts.
-
-#### Persisting the record
-
-```python
-def get_best_f1():
-    if BEST_F1_FILE.exists():
-        try:
-            return float(BEST_F1_FILE.read_text().strip())
-        except ValueError:
-            return -1.0
-    return -1.0
-```
-
-Reads `best_f1.txt`. Returns `-1.0` if the file is missing or corrupt — a sentinel that's below any legal F1 score, so the very first real evaluation automatically becomes the record. The `try/except` means a truncated or garbage file degrades gracefully instead of crashing the overnight run.
-
-#### The git automation
-
-```python
-def commit_and_push_best(f1_value: float):
-    message = f"f1: {f1_value:.6f}"
-    if not git(["add", "."], PROJECT_DIR):
-        return False
-    if not git(["commit", "-m", message], PROJECT_DIR):
-        log("Nothing to commit or commit failed - continuing anyway.")
-    return git(["push", "origin", "main"], PROJECT_DIR)
-```
-
-This is why the commit history reads like a scoreboard:
-
-```
-e7bbe5f  f1: 0.5
-05767ca  f1: 0.444444
-16cff23  f1: 0.333333
-69301f9  f1: 0.285714
-a9dec77  f1: 0.250000
-```
+Hardcoded Windows paths, invoking the virtualenv's `python.exe` directly so the subprocess inherits the right packages regardless of how the parent was launched. (`(dectetor)`  the typo is in the actual directory name.)
 
 Every one of those was written by a machine, at the moment it beat its own record, and pushed to GitHub automatically. The version history *is* the experiment log. That's a genuinely good idea.
 
-*(It pushes to `origin main`, but the default branch is now `randomforest` — this will fail until updated.)*
-
-#### The Karplus-Strong easter egg
-
-```python
-def karplus(frequency):
-    sample_rate = 44100
-    delay = int(sample_rate / frequency)
-    buffer = np.random.uniform(-1, 1, delay)
-    samples = []
-    for _ in range(44100):
-        samples.append(buffer[0])
-        first  = buffer[0]
-        second = buffer[1]
-        new_sample = 0.996 * (first + second) / 2
-        buffer = np.append(buffer[1:], new_sample)
-    ...
-```
-
-This has nothing to do with exoplanets, and it's delightful. It's the **Karplus-Strong algorithm** — a famously elegant piece of 1980s physical-modelling synthesis that produces a startlingly realistic plucked-string sound from almost nothing. It's called from `git()` so the machine goes *plink* every time it commits a new best model: an audible notification that something good happened while you were asleep.
-
-How it works, because it's worth knowing:
-
-1. **Fill a buffer with noise.** Buffer length = `sample_rate / frequency`. For 124 Hz that's 355 samples. Pure white noise contains every frequency at once — this is the "pluck," the instant of chaos when a string is first displaced.
-2. **Loop the buffer, averaging as you go.** Output the first sample, then compute the average of the first two, and push that average onto the back of the buffer.
-3. **The averaging is a low-pass filter.** High frequencies are exactly what averaging destroys fastest. So with each pass around the loop, the noise loses its brightness — while the loop length preserves the fundamental pitch.
-4. **The `0.996` factor** bleeds a tiny amount of energy on each pass, so the note decays to silence instead of ringing forever.
-
-The result is a note that starts bright and percussive and mellows into a pure tone as it fades — which is precisely what a real plucked string does, because a real string also loses its high harmonics to friction faster than its fundamental. Ten lines of code, real physics.
-
-`samples / np.max(np.abs(samples))` normalises to the range [-1, 1], `* 32767` scales to 16-bit integer range, and `np.column_stack((audio, audio))` duplicates the mono signal into two identical channels for stereo playback.
-
-> ⚠️ **It's currently broken.** The final lines reference `p.sndarray.make_sound(...)` and `p.time.wait(2000)`, but `p` is never imported — presumably `import pygame as p`. As written, calling `karplus()` raises `NameError`, and since `git()` calls it unconditionally, **the git automation will crash.** It worked before the sound was added (the log proves it), and it was added in commit `5bf7e09` on 2026-08-11 — after the last logged run. [Fix in section 10.](#10-known-bugs-and-rough-edges)
-
-#### The main loop
-
-```python
-for iteration in range(1, MAX_ITERATIONS + 1):
-    f1 = run_evaluate()
-    if f1 is None:
-        sys.exit(1)
-
-    if f1 > best_f1 + MIN_IMPROVEMENT or best_f1 < 0:
-        best_f1 = f1
-        save_best_f1(best_f1)
-        no_improve_streak = 0
-        commit_and_push_best(best_f1)
-        if not CONTINUE_AFTER_BEST:
-            return
-    else:
-        no_improve_streak += 1
-        if no_improve_streak >= PATIENCE:
-            return
-
-    run_train()
-```
-
-Straightforward and correct: evaluate → compare → record or increment the streak → retrain → repeat.
-
-Why retraining at all produces different results, given no hyperparameters change: the neural network's weight initialisation, dropout masks, and batch shuffling are all random. With only 30 positive training examples, that randomness dominates. Each retrain is effectively a lottery ticket, and this loop buys 717 of them.
-
-> ⚠️ **The methodological catch.** This loop selects the best model *by its score on the test set*, and the test set is the thing that's supposed to be untouched until the very end. Run 717 lotteries and keep the winner, and the winning score is partly measuring luck rather than skill. The honest fix is to select on the *validation* set (which `dataset.py` already provides and nothing currently uses) and touch the test set exactly once. **F1 = 0.571 should therefore be read as an optimistic ceiling, not an unbiased estimate.** Flagging this isn't a criticism of the project — it's the kind of thing that's genuinely easy to miss and worth understanding deeply.
-
----
-
-### 5.6 `models/exoplanet_detector.keras` — the frozen neural network
+### 5.6 `models/exoplanet_detector.keras` — the neural network
 
 10 MB, saved by Keras 3.15.0 on **2026-08-11 at 21:03:38** — timestamped to the exact second the F1 hit its record of 0.571429. This file *is* the champion.
 
@@ -865,69 +672,6 @@ Open in append mode `"a"` so nothing is ever overwritten across runs, with expli
 
 ---
 
-### 5.8 The ghosts: `train.py`, `evaluate.py`, `model.py`
-
-These files **no longer exist on the current branch** — they were deleted in commits `e7f3051`, `3ee7fa9`, and `94b80ff`. But `auto_train_loop.py` still calls them by name, and `__pycache__` still holds their compiled bytecode. They're documented here because the loop is unrunnable without them, and because they explain how `exoplanet_detector.keras` came to exist.
-
-They're recoverable with `git show 33fba2f^:src/train.py` and similar.
-
-#### `src/model.py` — the architecture factory
-
-```python
-import tensorflow as tf
-
-def create_model(input_shape):
-    model = tf.keras.Sequential([
-        tf.keras.layers.Input(shape=input_shape),
-        tf.keras.layers.Dense(256, activation="relu"),
-        tf.keras.layers.Dropout(0.3),
-        tf.keras.layers.Dense(128, activation="relu"),
-        tf.keras.layers.Dropout(0.3),
-        tf.keras.layers.Dense(64, activation="relu"),
-        tf.keras.layers.Dropout(0.3),
-        tf.keras.layers.Dense(32, activation="relu"),
-        tf.keras.layers.Dense(1, activation="sigmoid")
-    ])
-    model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-        loss=tf.keras.losses.BinaryFocalCrossentropy(gamma=2.0,
-                                                     apply_class_balancing=False),
-        metrics=["accuracy",
-                 tf.keras.metrics.Precision(name="precision"),
-                 tf.keras.metrics.Recall(name="recall"),
-                 tf.keras.metrics.AUC(name="auc")]
-    )
-    return model
-```
-
-This matches the saved `.keras` file byte for byte in structure. It's the source of the frozen model.
-
-#### The CNN that was tried and abandoned
-
-Three earlier commits (`815e4ac`, `b16e549`, `204ff54`, around 2026-07-23 to 07-26) contain a completely different `model.py` — a 1D convolutional network:
-
-```python
-def create_model(input_shape):
-    model = tf.keras.Sequential([
-        tf.keras.layers.Input(shape=input_shape),
-        tf.keras.layers.Conv1D(filters=32, kernel_size=5, activation="relu"),
-        tf.keras.layers.Conv1D(filters=64, kernel_size=5, activation="relu"),
-        tf.keras.layers.BatchNormalization(),
-        tf.keras.layers.MaxPooling1D(pool_size=2),
-        tf.keras.layers.GlobalAveragePooling1D(),
-        tf.keras.layers.Dropout(0.3),
-        tf.keras.layers.Dense(64, activation="relu"),
-        tf.keras.layers.Dense(1, activation="sigmoid")
-    ])
-    model.compile(
-        optimizer="adam",
-        loss=tf.keras.losses.BinaryFocalCrossentropy(gamma=2.0,
-                                                     apply_class_balancing=True),
-        metrics=["accuracy"]
-    )
-    return model
-```
-
 **A CNN is theoretically the right tool for this problem, and it's worth understanding why.**
 
 A `Conv1D` layer slides a small learnable window (here 5 timesteps wide) along the entire light curve, applying the same weights at every position. This gives it **translation invariance**: if it learns to recognise the shape of a transit dip, it recognises that shape *anywhere in the sequence*. That directly attacks [Problem 3](#problem-3--time-is-not-aligned-across-stars) — the transit no longer has to be in the same column across stars.
@@ -940,10 +684,6 @@ The layer stack:
 - **`MaxPooling1D(pool_size=2)`** — halves the sequence length by keeping the maximum of each adjacent pair. Cuts computation and adds small-shift tolerance.
 - **`GlobalAveragePooling1D`** — collapses the entire remaining sequence to a single value per filter by averaging. This is what makes the network accept variable-position signals; it asks *"did this filter fire anywhere?"* rather than *"did it fire at position 200?"*
 - **`apply_class_balancing=True`** — unlike the MLP, this version *did* enable focal loss's alpha weighting.
-
-The commit that followed this one is titled **`"its all worse now"`**, and the CNN was reverted to the MLP. Which is an entirely believable outcome: with only 30 positive examples, a CNN — despite being architecturally correct — has nowhere near enough data to learn what a transit looks like from scratch. The right architecture with insufficient data still loses.
-
-*(The `model_cnn.cpython-313.pyc` in `__pycache__` suggests a separate CNN module also existed locally at some point, never committed as source.)*
 
 #### `src/train.py` — the training driver
 
@@ -1026,8 +766,6 @@ for idx in planet_indices:
 ```
 
 That listing tells you at a glance whether the model is close-but-miscalibrated or genuinely lost.
-
-> ⚠️ **Two real bugs here.** First, the confusion matrix and classification report are computed at a **hardcoded `0.112578`**, not at `best_threshold` — so the printed matrix does not correspond to the printed F1. Second and more seriously, the threshold sweep optimises against `y_test`, which means the reported F1 is the *best possible* score on the test set, chosen with knowledge of the answers. Both are fixable; see below.
 
 ---
 
@@ -1369,49 +1107,6 @@ Documented honestly, with fixes.
 | 14 | Repo-wide | Hardcoded Windows absolute paths in three files | Move to a `config.py` or environment variables |
 
 ---
-
-## 11. Where this should go next
-
-Ordered by expected impact.
-
-### 1. Fix the representation (this is the big one)
-
-Everything else is a rounding error next to this. The models currently see raw, unaligned time series where column *k* means nothing consistent across stars. The standard fixes, in order of ambition:
-
-**Phase folding.** Run a Box Least Squares (BLS) periodogram — a classical algorithm designed for exactly this — to find the most likely orbital period. Then wrap the light curve on that period so every transit stacks on top of every other transit. A 0.01% dip repeated 12 times becomes a single, unmistakable, 12×-reinforced dip. This alone typically transforms the problem. `astropy.timeseries.BoxLeastSquares` implements it.
-
-**Global + local views.** The approach that made Shallue & Vanderburg's 2018 network work (it found Kepler-90i, an eighth planet in a known system): feed the network *two* inputs — a phase-folded view of the whole orbit, and a zoomed-in view centred on the transit itself. One provides context, the other provides detail.
-
-**Frequency-domain features.** An FFT of the light curve converts "a dip every 340 timesteps" into a sharp peak at a specific frequency — position-independent by construction.
-
-**Hand-crafted physical features.** Depth, duration, ingress/egress slope, period, transit shape (U-shaped for planets, V-shaped for grazing binaries), odd-vs-even transit depth (a difference indicates an eclipsing binary, not a planet). Thirty engineered features that actually mean something will beat 3,197 features that don't, especially with only 37 positives.
-
-### 2. Cross-validation instead of a single split
-
-Seven validation planets is far too few to measure anything reliably. Use `StratifiedKFold` with 5 folds so every planet serves as a test case exactly once, and report mean ± standard deviation. Given that the 717-run F1 distribution ranges from 0.087 to 0.571, error bars aren't optional — they're the only honest way to report a result.
-
-### 3. Clean up the evaluation protocol
-
-Select thresholds and models on validation; touch the test set once. This will lower the reported number and make it trustworthy.
-
-### 4. Try gradient boosting
-
-`XGBoost` or `LightGBM` with `scale_pos_weight=135` frequently outperform Random Forests on tabular problems, and both have first-class support for imbalanced data.
-
-### 5. Reframe as anomaly detection
-
-With 37 positives against 5,050 negatives, this might be better posed as *"learn what a normal star looks like, then flag whatever doesn't fit."* An autoencoder trained only on non-planet light curves would reconstruct ordinary stars well and planet-hosting stars badly; reconstruction error becomes the anomaly score. This uses all 5,050 negatives productively instead of treating them as the boring majority class.
-
-### 6. Report precision-recall curves, not point estimates
-
-A single F1 at a single threshold hides the whole trade-off. Plot precision against recall across all thresholds and report **average precision** — the right summary statistic for a heavily imbalanced problem, and far more informative than any one number.
-
-### 7. Housekeeping
-
-Add `requirements.txt` and a real `.gitignore`, move hardcoded paths into config, restore or retire the ghost files, and consider `git lfs` for the model checkpoint.
-
----
-
 ## Built with
 
 | Tool | Role here |
